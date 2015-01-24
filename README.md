@@ -1,5 +1,5 @@
 # js-communicate
-AS-JS的交互通讯模块，提供了JS中模拟AS3事件监听处理方式用于取代AS直接调页面接口。  
+AS-JS的交互通讯模块，提供了JS中模拟AS3事件监听处理方式用于取代AS直接调页面接口的方式。  
 使用该库将为SWF提供三个接口给JS来调用：  
 1、notify，用于JS调AS中的接口  
 2、addEventListener，用于模拟事件监听  
@@ -49,7 +49,7 @@ function checkSwfReady(){
 	if (!swf || !swf.notify) return;
 	
 	var isReady = swf.notify("swfIsReady");
-	console.log("this swf is ready? " + (isReady?"yes":"false"));
+	console.log("Is this swf ready? " + (isReady?"yes":"false"));
 	if (isReady) {
 		if(interval>0)clearInterval(interval);
 		//此时SWF已经READY，可以交互了

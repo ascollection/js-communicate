@@ -36,7 +36,7 @@
 			if (!swf || !swf.notify) return;
 			
 			var isReady = swf.notify("swfIsReady");
-			console.log("this swf is ready? " + (isReady?"yes":"false"));
+			console.log("Is this swf ready? " + (isReady?"yes":"false"));
 			if (isReady) {
 				if(interval>0)clearInterval(interval);
 				//此时SWF已经READY，可以交互了
