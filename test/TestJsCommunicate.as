@@ -24,7 +24,7 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
 			JSCommunicator.getInstance().add(this, {"swfIsReady": "swfIsReady"});
-			JSCommunicator.getInstance().add(this, [{"abc": "booo"}, {"booo": "booo"}]);
+			JSCommunicator.getInstance().add(this, {"abc": "booo"}, {"booo": "booo"});
 			JSCommunicator.getInstance().add(this, [{"setInfo": "info"}, {"info": "info"}]);
 		}
 		

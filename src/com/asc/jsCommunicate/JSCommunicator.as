@@ -159,23 +159,45 @@ package com.asc.jsCommunicate
 			delete listenerDict[type];
 		}
 		
-		public function add(thisObj:Object, option:*):void
+		/**
+		 * 为SWF的notify接口添加调用映射配置（key为JS调用notify的消息名，value为SWF中thisObj下的方法名）
+		 * e.g.:
+		 *      add(oneObject, [{"pausePlayer":"pause"}, {"pause":"pause"}]);
+		 *      add(oneObject, {"pausePlayer":"pause"}, {"pause":"pause"});
+		 *      swf.notify('pausePlayer', [p1, p2, ...])  --->  oneObject.pause(p1, p2, ...)
+		 *      swf.notify('pause', [p1, p2, ...])        --->  oneObject.pause(p1, p2, ...)
+		 * @param	thisObj 调用对象
+		 * @param	...option 映射配置, 支持{}, {},...以及[{}, {}, {}]的数据形式
+		 */
+		public function add(thisObj:Object, ... option):void
 		{
-			if (option is Array)
+			if (!option || option.length == 0)
+				return;
+			
+			if (option[0] is Array) //add(this, [{}, {}]);
+			{
+				addFnsToCallbackHeap(thisObj, option[0]);
+			}
+			else //add(this, {}, {});
 			{
 				addFnsToCallbackHeap(thisObj, option);
 			}
-			else if (option is Object)
-			{
-				addToCallbackHeap(thisObj, option);
-			}
 		}
 		
+		/**
+		 * 根据消息名从SWF的notify接口调用映射配置中移除配置
+		 * @param	name JS调用notify接口的消息名
+		 */
 		public function remove(name:String):void
 		{
 			removeFromCallbackHeap(name);
 		}
 		
+		/**
+		 * 抛出JS事件，将根据js是否已注册了该事件，决定是否执行相应listener
+		 * @param	eventType   事件名
+		 * @param	... params  listener方法的参数
+		 */
 		public function dispatcher(eventType:String, ... params):void
 		{
 			var listener:String = listenerDict[eventType];
@@ -183,6 +205,9 @@ package com.asc.jsCommunicate
 				jsInterface.call(listener, params);
 		}
 		
+		/**
+		 * 重置JS通讯模块
+		 */
 		public function reset():void
 		{
 			if (jsInterface)
@@ -200,6 +225,9 @@ package com.asc.jsCommunicate
 			initJSEventListener();
 		}
 		
+		/**
+		 * 析构JS通讯模块
+		 */
 		public function destroy():void
 		{
 			if (jsInterface)
